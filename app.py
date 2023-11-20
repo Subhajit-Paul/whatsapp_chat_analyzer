@@ -136,8 +136,11 @@ if uploaded_file is not None:
                 fig,ax = plt.subplots()
                 ax.pie(emoji_df[1].head(),labels=emoji_df[0].head(),autopct="%0.2f")
                 st.pyplot(fig)
+        st.link_button("Contribute to this GitHub Repo ", url="https://github.com/Subhajit-Paul/whatsapp_chat_analyzer/")
     except:
         st.write("Please upload a valid file")
+        
+
 
 
 
