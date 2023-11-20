@@ -3,10 +3,20 @@ import preprocessor, helper
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-st.sidebar.title("Whatsapp Chat Analyzer")
+st.title("Subhajit's Whatsapp Chat Analyzer", anchor=False)
+st.header("How to access it?", anchor=False)
+st.subheader("Follow these steps 👇", anchor=False, divider='rainbow')
+st.write("1. Open any Whatsapp Group chat in mobile")
+st.write("2. Go to more options")
+st.write("3. Click on More")
+st.write("4. Click on Export chat")
+st.write("5. Save Without media option")
+st.write("6. Share it with yourself")
+st.write("7. Upload")
 
-uploaded_file = st.sidebar.file_uploader("Choose a file")
+uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
+    
     bytes_data = uploaded_file.getvalue()
     data = bytes_data.decode("utf-8")
     df = preprocessor.preprocess(data)
@@ -16,8 +26,8 @@ if uploaded_file is not None:
     user_list.remove('group_notification')
     user_list.sort()
     user_list.insert(0,"Overall")
-
-    selected_user = st.sidebar.selectbox("Show analysis wrt",user_list)
+    st.sidebar.subheader("Select User to show analysis:")
+    selected_user = st.sidebar.selectbox("", user_list)
 
     if st.sidebar.button("Show Analysis"):
 
