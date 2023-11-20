@@ -1,21 +1,27 @@
 import re
 import pandas as pd
+import streamlit as st
 
 def preprocess(data):
     pattern = '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
-
     messages = re.split(pattern, data)[1:]
     dates = re.findall(pattern, data)
-
-    df = pd.DataFrame({'user_message': messages, 'message_date': dates})
-    # convert message_date type
-    try:
-        df['message_date'] = pd.to_datetime(df['message_date'], format='%m/%d/%y, %H:%M - ')
-    except:
-        df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
-
+    if len(messages) == 0:
+        pattern = '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s[APMapm]{2}\s-\s' 
+        messages = re.split(pattern, data)[1:]
+        dates = re.findall(pattern, data)
+        df = pd.DataFrame({'user_message': messages, 'message_date': dates})
+        try: df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %I:%M %p - ')
+        except: df['message_date'] = pd.to_datetime(df['message_date'], format='%m/%d/%y, %I:%M %p - ')
+    else:
+        df = pd.DataFrame({'user_message': messages, 'message_date': dates})
+        try:
+            df['message_date'] = pd.to_datetime(df['message_date'], format='%m/%d/%y, %H:%M - ')
+        except:
+            df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')      
+    
     df.rename(columns={'message_date': 'date'}, inplace=True)
-
+    
     users = []
     messages = []
     for message in df['user_message']:
